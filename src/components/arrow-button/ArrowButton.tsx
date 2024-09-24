@@ -2,17 +2,20 @@ import arrow from 'src/images/arrow.svg';
 
 import styles from './ArrowButton.module.scss';
 import React, { useEffect, useRef } from 'react';
-// import * as events from 'node:events';
 
 /** Функция для обработки открытия/закрытия формы */
 export type OnClick = () => void;
 
 type TProps = {
 	isOpened: boolean;
+	opener: React.Dispatch<React.SetStateAction<boolean>>;
 };
-export const ArrowButton = ({ isOpened }: TProps) => {
+export const ArrowButton = ({ isOpened, opener }: TProps) => {
 	const btnRef = useRef<HTMLDivElement | null>(null);
 	const arrowRef = useRef<HTMLImageElement | null>(null);
+	const toggleOpened = () => {
+		isOpened ? opener(false) : opener(true);
+	};
 	useEffect(() => {
 		if (isOpened) {
 			btnRef.current?.classList.add(styles.container_open);
@@ -29,7 +32,7 @@ export const ArrowButton = ({ isOpened }: TProps) => {
 			aria-label='Открыть/Закрыть форму параметров статьи'
 			tabIndex={0}
 			className={styles.container}
-			onClick={() => console.log()}
+			onClick={toggleOpened}
 			ref={btnRef}>
 			<img
 				src={arrow}
