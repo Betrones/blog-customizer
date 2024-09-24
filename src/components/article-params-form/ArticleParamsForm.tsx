@@ -54,10 +54,12 @@ export const ArticleParamsForm = ({ optionsChanger }: TProps) => {
 			contentWidth: chosenWidth,
 			fontColor: chosenFontColor,
 		});
+		setAsideOpened(false);
 	};
 	const handleReset = () => {
 		optionsChanger(defaultArticleState);
 		setOptionsToDefault(defaultArticleState);
+		setAsideOpened(false);
 	};
 	const setOptionsToDefault = (defaultOptions: ArticleStateType) => {
 		setFontFamily(defaultOptions.fontFamilyOption);
