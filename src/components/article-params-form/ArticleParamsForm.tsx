@@ -2,7 +2,7 @@ import { ArrowButton } from 'components/arrow-button';
 import { Button } from 'components/button';
 
 import styles from './ArticleParamsForm.module.scss';
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
+import React, { FormEvent, useRef, useState } from 'react';
 import { Select } from '../select';
 import { RadioGroup } from '../radio-group';
 import {
@@ -17,6 +17,8 @@ import {
 } from 'src/constants/articleProps';
 import { Separator } from '../separator';
 import { useOutsideClickClose } from '../select/hooks/useOutsideClickClose';
+import { Text } from '../text';
+import clsx from 'clsx';
 
 type TProps = {
 	optionsChanger: React.Dispatch<React.SetStateAction<ArticleStateType>>;
@@ -38,13 +40,6 @@ export const ArticleParamsForm = ({ optionsChanger }: TProps) => {
 	);
 	const [chosenWidth, setWidth] = useState(defaultArticleState.contentWidth);
 	const asideRef = useRef<HTMLDivElement | null>(null);
-	useEffect(() => {
-		if (!asideOpened) {
-			asideRef.current?.classList.remove(styles.container_open);
-		} else {
-			asideRef.current?.classList.add(styles.container_open);
-		}
-	}, [asideOpened]);
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		optionsChanger({
@@ -76,7 +71,11 @@ export const ArticleParamsForm = ({ optionsChanger }: TProps) => {
 	return (
 		<>
 			<ArrowButton isOpened={asideOpened} opener={setAsideOpened} />
-			<aside className={styles.container} ref={asideRef}>
+			<aside
+				className={clsx(styles.container, {
+					[styles.container_open]: asideOpened,
+				})}
+				ref={asideRef}>
 				<form
 					className={styles.form}
 					onSubmit={(e) => {
@@ -84,6 +83,15 @@ export const ArticleParamsForm = ({ optionsChanger }: TProps) => {
 					}}
 					onReset={handleReset}>
 					<div className={styles.content}>
+						<Text
+							// eslint-disable-next-line react/no-children-prop
+							children={'Задайте параметры'}
+							as={'h2'}
+							size={31}
+							weight={800}
+							family='open-sans'
+							uppercase={true}
+						/>
 						<Select
 							selected={chosenFont}
 							options={fontFamilyOptions}
@@ -91,7 +99,7 @@ export const ArticleParamsForm = ({ optionsChanger }: TProps) => {
 							onChange={(e: OptionType) => setFontFamily(e)}
 						/>
 						<RadioGroup
-							name='idk'
+							name='Размер шрифта'
 							options={fontSizeOptions}
 							selected={chosenFontSize}
 							title='Размер шрифта'

@@ -1,7 +1,8 @@
 import arrow from 'src/images/arrow.svg';
 
 import styles from './ArrowButton.module.scss';
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
+import clsx from 'clsx';
 
 /** Функция для обработки открытия/закрытия формы */
 export type OnClick = () => void;
@@ -16,29 +17,20 @@ export const ArrowButton = ({ isOpened, opener }: TProps) => {
 	const toggleOpened = () => {
 		isOpened ? opener(false) : opener(true);
 	};
-	useEffect(() => {
-		if (isOpened) {
-			btnRef.current?.classList.add(styles.container_open);
-			arrowRef.current?.classList.add(styles.arrow_open);
-		} else {
-			btnRef.current?.classList.remove(styles.container_open);
-			arrowRef.current?.classList.remove(styles.arrow_open);
-		}
-	}, [isOpened]);
 	return (
 		/* Не забываем указаывать role и aria-label атрибуты для интерактивных элементов */
 		<div
 			role='button'
 			aria-label='Открыть/Закрыть форму параметров статьи'
 			tabIndex={0}
-			className={styles.container}
+			className={clsx(styles.container, { [styles.container_open]: isOpened })}
 			onClick={toggleOpened}
 			ref={btnRef}>
 			<img
 				src={arrow}
 				ref={arrowRef}
 				alt='иконка стрелочки'
-				className={styles.arrow}
+				className={clsx(styles.arrow, { [styles.arrow_open]: isOpened })}
 			/>
 		</div>
 	);
