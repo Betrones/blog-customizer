@@ -12,6 +12,12 @@
 	transform: translate(0);
 }
 
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: 50px;
+}
+
 .form {
 	display: flex;
 	flex-shrink: 0;
